@@ -1,0 +1,76 @@
+[ ] Fix typing even if editor in not focused
+[ ] What if text is large in size
+[X] Handle backspace deleting a line should decrease the lines variable but how to know it it deleted line?
+[ ] Virtual DOM instead of re-rendering the whole DOM
+[ ] Add a button to add a new line at the end
+[ ] Add a button to add a new line at the beginning
+[ ] Add a button to add a new line at the current position
+[ ] Add a button to add a new line after the current line
+[ ] Add a button to add a new line before the current line
+[ ] Add a button to add a new line after the selected lines
+[ ] Add a button to add a new line before the selected lines
+[ ] Add a button to add a new line at the end of the selected lines
+[ ] Add a button to add a new line at the beginning of the selected lines
+[ ] Add a button to add a new line at the current position of the selected lines
+[ ] Add a button to add a new line after the last line
+[ ] Add a button to add a new line
+[ ] Add a button to delete a line
+[ ] Add a button to clear all lines
+[ ] Add a button to save the lines to local storage
+[ ] Add a button to load the lines from local storage
+[ ] Add a button to clear the local storage
+[ ] Add a button to copy the lines to clipboard
+[ ] Add a button to paste the lines from clipboard
+[ ] Add a button to undo the last action
+[ ] Add a button to redo the last action
+[ ] Add a button to select all lines
+[ ] Add a button to deselect all lines
+[ ] Add a button to cut the selected lines
+[ ] Add a button to copy the selected lines
+[ ] Add a button to paste the copied lines
+[ ] Add a button to delete the selected lines
+[ ] Add a button to move the selected lines up
+[ ] Add a button to move the selected lines down
+[ ] Add a button to move the selected lines left
+[ ] Add a button to move the selected lines right
+[ ] Add a button to move the selected lines to the top
+[ ] Add a button to move the selected lines to the bottom
+[ ] Add a button to move the selected lines to the left edge
+[ ] Add a button to move the selected lines to the right edge
+[ ] Add a button to move the selected lines to the center
+[ ] Add a button to move the selected lines to the middle
+[ ] Add a button to move the selected lines to the start
+[ ] Add a button to move the selected lines to the end
+[ ] Add a button to move the selected lines to the beginning
+[ ] Add a button to move the selected lines to the finish
+[ ] Add a button to move the selected lines to the first
+[ ] Add a button to move the selected lines to the last
+[ ] Add a button to move the selected lines to the previous
+[ ] Add a button to move the selected lines to the next
+[ ] Add a button to move the selected lines to the previous page
+[ ] Add a button to move the selected lines to the next page
+[ ] Add a button to move the selected lines to the previous section
+[ ] Add a button to move the selected lines to the next section
+[ ] Add a button to move the selected lines to the previous chapter
+[ ] Add a button to move the selected lines to the next chapter
+[ ] Add a button to move the selected lines to the previous paragraph
+[ ] Add a button to move the selected lines to the next paragraph
+[ ] Add a button to move the selected lines to the previous sentence
+[ ] Add a button to move the selected lines to the next sentence
+[ ] Add support for VIM key binding
+[ ] Add UI to show key bindings info
+[ ] Add support for loading different fonts
+[ ] Add support for loading different themes
+[ ] Add support for key binding customization
+[ ] Add support to use the editor as a webview
+[ ] Add support to use the editor as a webview in a mobile app
+[ ] Add support to use the editor as a webview in a desktop app
+[ ] Add support to use the editor as a webview in a browser extension
+[ ] Add support to use the editor as a webview in a browser
+[ ] Add support to use the editor as a webview in a mobile browser
+[ ] Add support to use the editor as a webview in a desktop browser
+[ ] Add support to use the editor as a webview in a mobile app with offline support
+[ ] Add support to use the editor as a webview in a desktop app with offline support
+[ ] Add support to use the editor as iframe
+[ ] Add support to be used as react component
+[ ] Add support to show a notification toast for different events

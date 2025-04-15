@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Editor</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="toolbar">
+      <select name="" id="font-family" tabindex="0">
+        <option value="Arial">Arial</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+      </select>
+      <select name="" id="font-size" tabindex="0">
+        <option value="12">12</option>
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option value="18">18</option>
+        <option value="20">20</option>
+        <option value="22">22</option>
+      </select>
+      <button id="bold-btn" data-action="bold">
+        <span class="tooltip-text"></span>
+        <i class="fa fa-bold" aria-hidden="true"></i>
+      </button>
+      <button id="italic-btn" data-action="italic">
+        <span class="tooltip-text"></span>
+        <i class="fa fa-italic" aria-hidden="true"></i>
+      </button>
+      <button id="underline-btn" data-action="underline">
+        <span class="tooltip-text"></span>
+        <i class="fa fa-underline fa-lg" aria-hidden="true"></i>
+      </button>
+      <button id="clear-btn" data-action="clear">
+        <span class="tooltip-text"></span>
+        Clear
+      </button>
+      <button id="save-btn" data-action="save">
+        <span class="tooltip-text"></span>
+        <i class="fa-regular fa-file-pdf fa-lg"></i>
+      </button>
+      <button id="copy-btn" data-action="copy">
+        <span class="tooltip-text"></span>
+        <i class="fas fa-copy fa-lg"></i>
+      </button>
+      <button id="cut-btn" data-action="cut">
+        <span class="tooltip-text"></span>
+        <i class="fas fa-cut fa-lg"></i>
+      </button>
+      <button id="paste-btn" data-action="paste">
+        <span class="tooltip-text"></span>
+        <i class="fas fa-paste fa-lg"></i>
+      </button>
+      <input type="color" id="text-color-picker" value="#000000" />
+    </div>
+    <div class="editor-container">
+      <div class="editor">
+        <div class="line-numbers">
+          <span>1</span>
+        </div>
+        <canvas
+          id="editor-canvas"
+          width="800"
+          height="600"
+          style="border: 1px solid #ccc"
+        >
+          Your browser does not support the canvas element.
+        </canvas>
+      </div>
+      <!-- <textarea id="editor-textarea" style="display: none"></textarea> -->
+      <div class="status-bar">
+        <span id="cursor-position">Line: 1, Column: 1</span>
+        <span id="word-count">Word Count: 0</span>
+        <span id="character-count">Character Count: 0</span>
+        <span id="line-count">Line Count: 1</span>
+        <span id="selection-info"></span>
+      </div>
+    </div>
+    <script src="index.js"></script>
+    <script src="text_editor.js"></script>
+    <script src="key_mappings.js"></script>
+  </body>
+</html>
