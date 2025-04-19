@@ -1,6 +1,7 @@
 class TextEditor {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
+    this.lineNumbers = document.getElementById("line-numbers");
     this.ctx = this.canvas.getContext("2d");
     this.text = "";
     this.cursorX = 0;
@@ -17,7 +18,7 @@ class TextEditor {
     this.showCursor = true;
     this.cursorLine = 0;
     this.cursorCol = 0;
-    this.lineHeight = 20;
+    this.lineHeight = 15;
     this.paddingTop = 10;
     this.paddingLeft = 10;
     this.charWidth = 8; // avg. char width
@@ -100,10 +101,10 @@ class TextEditor {
         this.moveCursorRight(e.shiftKey);
         break;
       case "ArrowUp":
-        this.moveCursorUp(e.shiftKey);
+        this.moveCursorUp(e, e.shiftKey);
         break;
       case "ArrowDown":
-        this.moveCursorDown(e.shiftKey);
+        this.moveCursorDown(e, e.shiftKey);
         break;
       case "Backspace":
         this.handleBackspace();
@@ -151,9 +152,11 @@ class TextEditor {
             this.render();
             e.preventDefault();
           }
-        } else {
-          const char = String.fromCharCode(e.which);
-          this.insertText(char);
+        } else if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          if (e.key === "Shift" || e.key === "CapsLock") {
+            return;
+          }
+          this.insertText(e.key);
           e.preventDefault();
         }
     }
@@ -189,7 +192,7 @@ class TextEditor {
     this.render();
   }
   handleMouseMove(e) {
-    if (e.button === 1 && this.selectionStart) {
+    if (e.buttons === 1 && this.selectionStart) {
       const rect = this.canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
@@ -242,18 +245,19 @@ class TextEditor {
       const line = this.lines[start.line];
       this.lines[start.line] =
         line.substring(0, start.col) + line.substring(end.col);
+    } else {
+      const startLine = this.lines[start.line];
+      const endLine = this.lines[end.line];
+      this.lines[start.line] =
+        startLine.substring(0, start.col) + endLine.substring(end.col);
+      this.lines.splice(start.line + 1, end.line - start.line);
+      this.cursorLine = start.line;
+      this.cursorCol = start.col;
+      this.selectionStart = null;
+      this.selectionEnd = null;
+      this.updateCursorStatus();
+      this.render();
     }
-    const startLine = this.lines[start.line];
-    const endLine = this.lines[end.line];
-    this.lines[start.line] =
-      startLine.substring(0, start.col) + endLine.substring(end.col);
-    this.lines.splice(start.lines + 1, end.line - start.line);
-    this.cursorLine = start.line;
-    this.cursorCol = start.col;
-    this.selectionStart = null;
-    this.selectionEnd = null;
-    this.updateCursorStatus();
-    this.render();
   }
   hasSelection() {
     return (
@@ -388,6 +392,7 @@ class TextEditor {
     this.render();
   }
   moveCursorRight(shiftKey = false) {
+    console.log(shiftKey);
     if (!shiftKey && this.hasSelection()) {
       const { end } = this.normalizeSelection();
       this.cursorLine = end.line;
@@ -412,7 +417,8 @@ class TextEditor {
     this.updateCursorStatus();
     this.render();
   }
-  moveCursorUp(shiftKey = false) {
+  moveCursorUp(e, shiftKey = false) {
+    e.preventDefault();
     if (this.cursorLine > 0) {
       this.cursorLine--;
       const line = this.lines[this.cursorLine];
@@ -427,7 +433,8 @@ class TextEditor {
     this.updateCursorStatus();
     this.render();
   }
-  moveCursorDown(shiftKey = false) {
+  moveCursorDown(e, shiftKey = false) {
+    e.preventDefault();
     if (this.cursorLine < this.lines.length - 1) {
       this.cursorLine++;
       const line = this.lines[this.cursorLine];
@@ -518,6 +525,13 @@ class TextEditor {
     if (this.showCursor && !this.hasSelection()) {
       this.drawCursor();
     }
+    this.lineNumbers.innerHTML = "";
+    for (let i = 0; i < this.lines.length; i++) {
+      const span = document.createElement("span");
+      span.style.lineHeight = `${this.lineHeight - 2}px`;
+      span.textContent = i + 1;
+      this.lineNumbers.appendChild(span);
+    }
   }
   getFontString() {
     let fontStyle = "";
@@ -525,17 +539,56 @@ class TextEditor {
     if (this.isItalic) fontStyle += "italic ";
     return `${fontStyle}${this.fontSize}px ${this.fontFamily}`;
   }
-  drawSelectionBackground() {}
+  drawSelectionBackground(start, end) {
+    this.ctx.fillStyle = "rgba(0, 120, 215, 0.4)";
+    if (start.line === end.line) {
+      const line = this.lines[start.line];
+      const startX =
+        this.paddingLeft +
+        this.ctx.measureText(line.substring(0, start.col)).width;
+      const startY = this.paddingTop + start.line + this.lineHeight;
+      const width = this.ctx.measureText(
+        line.substring(start.col, end.col)
+      ).width;
+      this.ctx.fillRect(startX, startY, width, this.lineHeight);
+    } else {
+      const firstLine = this.lines[start.line];
+      const lastLine = this.lines[end.line];
+      const startX =
+        this.paddingLeft +
+        this.ctx.measureText(firstLine.substring(0, start.col)).width;
+      const startY = this.paddingTop + start.line * this.lineHeight;
+      const width = this.ctx.measureText(firstLine.substring(start.col)).width;
+      this.ctx.fillRect(startX, startY, width, this.lineHeight);
+      for (let i = start.line + 1; i < end.line; i++) {
+        const width = this.ctx.measureText(this.lines[i]).width;
+        const y = this.paddingTop + i * this.lineHeight;
+        this.ctx.fillRect(this.paddingLeft, y, width, this.lineHeight);
+      }
+      const lastY = this.paddingTop + end.line * this.lineHeight;
+      const lastLineWidth = this.ctx.measureText(
+        lastLine.substring(0, end.col)
+      ).width;
+      this.ctx.fillRect(
+        this.paddingLeft,
+        lastY,
+        lastLineWidth,
+        this.lineHeight
+      );
+    }
+    this.ctx.fillStyle = this.textColor;
+  }
   drawCursor() {
     const line = this.lines[this.cursorLine];
     const cursorText = line.substring(0, this.cursorCol);
     const x = this.paddingLeft + this.ctx.measureText(cursorText).width;
-    const y = this.paddingTop + this.cursorLine * this.lineHeight;
+    const y = this.paddingTop + this.cursorLine * this.lineHeight - 1;
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
     this.ctx.lineTo(x, y + this.lineHeight);
     this.ctx.strokeStyle = "#000";
     this.ctx.lineWidth = 1;
+    this.ctx.lineCap = "round";
     this.ctx.stroke();
   }
   setText(text) {
